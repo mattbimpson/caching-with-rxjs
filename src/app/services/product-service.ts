@@ -35,6 +35,7 @@ export class ProductService {
   }
 
   private requestProducts() {
+    console.log('Calling api method...');
     return of<ProductResponse>({
       type: '',
       value: [
