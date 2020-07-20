@@ -1,4 +1,6 @@
 <p>Products:</p>
 <ul>
-  <li *ngFor="let product of products$ | async"></li>
+  <li *ngFor="let product of products$ | async">
+    {{ product.name }} | {{ product.description }}
+  </li>
 </ul>
