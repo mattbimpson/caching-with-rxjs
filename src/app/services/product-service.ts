@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Product } from '../model/product';
-import { of, Observable } from 'rxjs';
-import { shareReplay, map } from 'rxjs/operators';
+import { of, Observable, timer } from 'rxjs';
+import { shareReplay, map, switchMap } from 'rxjs/operators';
 
 interface ProductResponse {
   type: string;
@@ -9,6 +9,7 @@ interface ProductResponse {
 }
 
 const CACHE_SIZE = 1;
+const REFRESH_INTERVAL = 10000;
 
 @Injectable()
 export class ProductService {
@@ -18,9 +19,16 @@ export class ProductService {
 
   get products() {
     if (!this.cache$) {
-      this.cache$ = this.requestProducts().pipe(
+      // Use timer to periodically refresh our cache
+      const timer$ = timer(0, REFRESH_INTERVAL);
+      this.cache$ = timer$.pipe(
+        switchMap(_ => this.requestProducts()),
         shareReplay(CACHE_SIZE)
       );
+      // Or without timer:
+      // this.cache$ = this.requestProducts().pipe(
+      //   shareReplay(CACHE_SIZE)
+      // );
     }
 
     return this.cache$;
