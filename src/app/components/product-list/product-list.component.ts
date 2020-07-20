@@ -7,13 +7,13 @@ import { ProductService } from 'src/app/services/product-service';
   selector: 'app-product-list',
   templateUrl: './product-list.component.html'
 })
-export class ProductListComponent implements OnInit {
+export class ProductListComponent {
 
   products$: Observable<Array<Product>>;
 
   constructor(private productService: ProductService) { }
 
-  ngOnInit() {
+  getProducts() {
     this.products$ = this.productService.products;
   }
 }

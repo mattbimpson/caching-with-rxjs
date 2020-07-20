@@ -17,6 +17,7 @@ export class ProductService {
   constructor() {}
 
   get products() {
+    debugger;
     if (!this.cache$) {
       this.cache$ = this.requestProducts().pipe(
         shareReplay(CACHE_SIZE)
